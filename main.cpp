@@ -1,6 +1,6 @@
 #include <iostream>
 
-struct FileHeader {
+struct FileH {
     short bfType;
     int bfSize;
     short bfReserved1;
@@ -8,12 +8,14 @@ struct FileHeader {
     int bfOffBits;
 };
 
-struct PictureHeader {
+struct PictureH {
     int biSize;
     int biWidth;
     int biHeight;
+    
     short biPlanes;
     short biBitCount;
+
     int biCompression;
     int biSizeImage;
     int biXPelsPerMeter;
@@ -22,37 +24,80 @@ struct PictureHeader {
     int biClrImportant;
 };
 
+void describe() {
+    FileH F;
+    PictureH P;
+    FILE* sourceFile = fopen("test.bmp", "rb");
+
+    fread(&F.bfType, sizeof(F.bfType), 1, sourceFile);
+    printf("F.bfType: %x \n", F.bfType);
+    fread(&F.bfSize, sizeof(F.bfSize), 1, sourceFile);
+    printf("F.bfSize \n", F.bfSize);
+    fread(&F.bfReserved1, sizeof(F.bfReserved1), 1, sourceFile);
+    printf("F.bfReserved2: %d \n", F.bfReserved1);
+    fread(&F.bfReserved2, sizeof(F.bfReserved2), 1, sourceFile);
+    printf("F.bfReserved2: %d \n", F.bfReserved2);
+    fread(&F.bfOffBits, sizeof(F.bfOffBits), 1, sourceFile);
+    printf("F.bfOffBits: %d \n", F.bfOffBits);
+
+    fseek(sourceFile, 14, SEEK_SET);
+    fread(&P.biSize, sizeof(P.biSize), 1, sourceFile);
+    printf("P.biSize: %d \n", P.biSize);
+    fread(&P.biWidth, sizeof(P.biWidth), 1, sourceFile);
+    printf("P.biWidt: %d \n", P.biWidth);
+    fread(&P.biHeight, sizeof(P.biHeight), 1, sourceFile);
+    printf("P.biHeight: %d \n", P.biHeight);
+    fread(&P.biPlanes, sizeof(P.biPlanes), 1, sourceFile);
+    printf("P.biPlanes: %d \n", P.biPlanes);
+    fread(&P.biBitCount, sizeof(P.biBitCount), 1, sourceFile);
+    printf("P.biBitCount: %d \n", P.biBitCount);
+    fread(&P.biCompression, sizeof(P.biCompression), 1, sourceFile);
+    printf("P.biCompression): %d \n", P.biCompression);
+    fread(&P.biSizeImage, sizeof(P.biSizeImage), 1, sourceFile);
+    printf("P.biSizeImage: %d \n", P.biSizeImage);
+    fread(&P.biXPelsPerMeter, sizeof(P.biXPelsPerMeter), 1, sourceFile);
+    printf("P.biXPelsPerMeter: %d \n", P.biXPelsPerMeter);
+    fread(&P.biYPelsPerMeter, sizeof(P.biYPelsPerMeter), 1, sourceFile);
+    printf("P.biYPelsPerMeter: %d \n", P.biYPelsPerMeter);
+    fread(&P.biClrUsed, sizeof(P.biClrUsed), 1, sourceFile);
+    printf("P.biClrUsed: %d \n", P.biClrUsed);
+    fread(&P.biClrImportant, sizeof(P.biClrImportant), 1, sourceFile);
+    printf("P.biClrImportant: %d \n", P.biClrImportant);
+
+    fclose(sourceFile);
+}
+
 void negative() {
-    FileHeader File;
-    PictureHeader Picture;
+    FileH F;
+    PictureH P;
 
     FILE* sourceFile = fopen("test.bmp", "rb");
     FILE* negativeFile = fopen("negative.bmp", "wb");
 
     fseek(negativeFile, 0, SEEK_SET);
-    fwrite(&File.bfType, sizeof(File.bfType), 1, negativeFile);
-    fwrite(&File.bfSize, sizeof(File.bfSize), 1, negativeFile);
-    fwrite(&File.bfReserved1, sizeof(File.bfReserved1), 1, negativeFile);
-    fwrite(&File.bfReserved2, sizeof(File.bfReserved2), 1, negativeFile);
-    fwrite(&File.bfOffBits, sizeof(File.bfOffBits), 1, negativeFile);
+    fwrite(&F.bfType, sizeof(F.bfType), 1, negativeFile);
+    fwrite(&F.bfSize, sizeof(F.bfSize), 1, negativeFile);
+    fwrite(&F.bfReserved1, sizeof(F.bfReserved1), 1, negativeFile);
+    fwrite(&F.bfReserved2, sizeof(F.bfReserved2), 1, negativeFile);
+    fwrite(&F.bfOffBits, sizeof(F.bfOffBits), 1, negativeFile);
 
     fseek(negativeFile, 14, SEEK_SET);
-    fwrite(&Picture.biSize, sizeof(Picture.biSize), 1, negativeFile);
-    fwrite(&Picture.biWidth, sizeof(Picture.biWidth), 1, negativeFile);
-    fwrite(&Picture.biHeight, sizeof(Picture.biHeight), 1, negativeFile);
-    fwrite(&Picture.biPlanes, sizeof(Picture.biPlanes), 1, negativeFile);
-    fwrite(&Picture.biBitCount, sizeof(Picture.biBitCount), 1, negativeFile);
-    fwrite(&Picture.biCompression, sizeof(Picture.biCompression), 1, negativeFile);
-    fwrite(&Picture.biSizeImage, sizeof(Picture.biSizeImage), 1, negativeFile);
-    fwrite(&Picture.biXPelsPerMeter, sizeof(Picture.biXPelsPerMeter), 1, negativeFile);
-    fwrite(&Picture.biYPelsPerMeter, sizeof(Picture.biYPelsPerMeter), 1, negativeFile);
-    fwrite(&Picture.biClrUsed, sizeof(Picture.biClrUsed), 1, negativeFile);
-    fwrite(&Picture.biClrImportant, sizeof(Picture.biClrImportant), 1, negativeFile);
+    fwrite(&P.biSize, sizeof(P.biSize), 1, negativeFile);
+    fwrite(&P.biWidth, sizeof(P.biWidth), 1, negativeFile);
+    fwrite(&P.biHeight, sizeof(P.biHeight), 1, negativeFile);
+    fwrite(&P.biPlanes, sizeof(P.biPlanes), 1, negativeFile);
+    fwrite(&P.biBitCount, sizeof(P.biBitCount), 1, negativeFile);
+    fwrite(&P.biCompression, sizeof(P.biCompression), 1, negativeFile);
+    fwrite(&P.biSizeImage, sizeof(P.biSizeImage), 1, negativeFile);
+    fwrite(&P.biXPelsPerMeter, sizeof(P.biXPelsPerMeter), 1, negativeFile);
+    fwrite(&P.biYPelsPerMeter, sizeof(P.biYPelsPerMeter), 1, negativeFile);
+    fwrite(&P.biClrUsed, sizeof(P.biClrUsed), 1, negativeFile);
+    fwrite(&P.biClrImportant, sizeof(P.biClrImportant), 1, negativeFile);
 
-    fseek(negativeFile, sizeof(File.bfOffBits), SEEK_SET);
+    fseek(negativeFile, sizeof(F.bfOffBits), SEEK_SET);
 
     int img;
-    for (int i = File.bfOffBits; i < File.bfSize; i++)
+    for (int i = F.bfOffBits; i < F.bfSize; i++)
     {
         fseek(sourceFile, i, SEEK_SET);
         fseek(negativeFile, i, SEEK_SET);
@@ -63,49 +108,6 @@ void negative() {
 
     fclose(sourceFile);
     fclose(negativeFile);
-}
-
-void describe() {
-    FileHeader File;
-    PictureHeader Picture;
-    FILE* sourceFile = fopen("test.bmp", "rb");
-
-    fread(&File.bfType, sizeof(File.bfType), 1, sourceFile);
-    printf("File.bfType: %x \n", File.bfType);
-    fread(&File.bfSize, sizeof(File.bfSize), 1, sourceFile);
-    printf("File.bfSize \n", File.bfSize);
-    fread(&File.bfReserved1, sizeof(File.bfReserved1), 1, sourceFile);
-    printf("File.bfReserved2: %d \n", File.bfReserved1);
-    fread(&File.bfReserved2, sizeof(File.bfReserved2), 1, sourceFile);
-    printf("File.bfReserved2: %d \n", File.bfReserved2);
-    fread(&File.bfOffBits, sizeof(File.bfOffBits), 1, sourceFile);
-    printf("File.bfOffBits: %d \n", File.bfOffBits);
-
-    fseek(sourceFile, 14, SEEK_SET);
-    fread(&Picture.biSize, sizeof(Picture.biSize), 1, sourceFile);
-    printf("Picture.biSize: %d \n", Picture.biSize);
-    fread(&Picture.biWidth, sizeof(Picture.biWidth), 1, sourceFile);
-    printf("Picture.biWidt: %d \n", Picture.biWidth);
-    fread(&Picture.biHeight, sizeof(Picture.biHeight), 1, sourceFile);
-    printf("Picture.biHeight: %d \n", Picture.biHeight);
-    fread(&Picture.biPlanes, sizeof(Picture.biPlanes), 1, sourceFile);
-    printf("Picture.biPlanes: %d \n", Picture.biPlanes);
-    fread(&Picture.biBitCount, sizeof(Picture.biBitCount), 1, sourceFile);
-    printf("Picture.biBitCount: %d \n", Picture.biBitCount);
-    fread(&Picture.biCompression, sizeof(Picture.biCompression), 1, sourceFile);
-    printf("Picture.biCompression): %d \n", Picture.biCompression);
-    fread(&Picture.biSizeImage, sizeof(Picture.biSizeImage), 1, sourceFile);
-    printf("Picture.biSizeImage: %d \n", Picture.biSizeImage);
-    fread(&Picture.biXPelsPerMeter, sizeof(Picture.biXPelsPerMeter), 1, sourceFile);
-    printf("Picture.biXPelsPerMeter: %d \n", Picture.biXPelsPerMeter);
-    fread(&Picture.biYPelsPerMeter, sizeof(Picture.biYPelsPerMeter), 1, sourceFile);
-    printf("Picture.biYPelsPerMeter: %d \n", Picture.biYPelsPerMeter);
-    fread(&Picture.biClrUsed, sizeof(Picture.biClrUsed), 1, sourceFile);
-    printf("Picture.biClrUsed: %d \n", Picture.biClrUsed);
-    fread(&Picture.biClrImportant, sizeof(Picture.biClrImportant), 1, sourceFile);
-    printf("Picture.biClrImportant: %d \n", Picture.biClrImportant);
-
-    fclose(sourceFile);
 }
 
 int main() {
